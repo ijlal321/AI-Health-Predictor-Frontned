@@ -1,0 +1,72 @@
+create table cancer_predictions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references users(id) on delete cascade,
+  prediction_time timestamp default now(),
+  result boolean not null,
+  radius_mean float not null,
+  texture_mean float not null,
+  perimeter_mean float not null,
+  area_mean float not null,
+  smoothness_mean float not null,
+  compactness_mean float not null,
+  concavity_mean float not null,
+  concave points_mean float not null,
+  symmetry_mean float not null,
+  fractal_dimension_mean float not null,
+  radius_se float not null,
+  texture_se float not null,
+  perimeter_se float not null,
+  area_se float not null,
+  smoothness_se float not null,
+  compactness_se float not null,
+  concavity_se float not null,
+  concave points_se float not null,
+  symmetry_se float not null,
+  fractal_dimension_se float not null,
+  radius_worst float not null,
+  texture_worst float not null,
+  perimeter_worst float not null,
+  area_worst float not null,
+  smoothness_worst float not null,
+  compactness_worst float not null,
+  concavity_worst float not null,
+  concave points_worst float not null,
+  symmetry_worst float not null,
+  fractal_dimension_worst float not null
+);
+
+
+
+
+
+create table users (
+  id uuid primary key default gen_random_uuid(),
+  username text unique not null,
+  email text unique not null,
+  password text not null,
+  otp text,
+  otp_expires_at timestamp with time zone,
+  created_at timestamp default now()
+);
+
+
+
+create table heart_disease_predictions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references users(id) on delete cascade,
+  prediction_time timestamp default now(),
+  result boolean not null,
+  age float not null,
+  anaemia integer not null,
+  creatinine_phosphokinase float not null,
+  diabetes integer not null,
+  ejection_fraction integer not null,
+  high_blood_pressure integer not null,
+  platelets float not null,
+  serum_creatinine float not null,
+  serum_sodium float not null,
+  sex integer not null,
+  smoking integer not null,
+  time float not null
+);
+
