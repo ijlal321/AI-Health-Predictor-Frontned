@@ -315,3 +315,23 @@ export async function getLatestPredictions(userId) {
     cancerPredictions,
   };
 }
+
+export async function getTotalPrediction() {
+  const { count: heartCount, error: heartError } = await supabase
+    .from("heart_disease_predictions")
+    .select("*", { count: "exact", head: true });
+
+  const { count: cancerCount, error: cancerError } = await supabase
+    .from("cancer_predictions")
+    .select("*", { count: "exact", head: true });
+
+  if (heartError || cancerError) {
+    console.error("Error fetching total predictions:", heartError || cancerError);
+    return { success: false, error: "Failed to fetch total predictions" };
+  }
+
+  return {
+    success: true,
+    totalPredictions: (heartCount || 0) + (cancerCount || 0),
+  };
+}

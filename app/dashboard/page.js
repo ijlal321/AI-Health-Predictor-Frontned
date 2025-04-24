@@ -2,24 +2,48 @@
 import { Heart, Activity, Users, AlertCircle } from "lucide-react"
 import { PredictionCard } from "@/components/prediction-card"
 import JwtVerifirer from "../../components/jwt-verifier"
-
+import { useEffect, useState } from "react"
+import { getTotalPrediction } from "../actions/prediction"
 export default function Dashboard() {
   
-  // In a real app, these would be fetched from your backend
-  const stats = [
-    {
-      title: "Total Predictions",
-      value: "0",
-      icon: Users,
-      description: "Total predictions made by all users",
-    },
-    {
-      title: "Heart Disease Risk",
-      value: "14%",
-      icon: AlertCircle,
-      description: "Average risk across all predictions",
-    },
-  ]
+  const [stats, setStats] = useState([
+  {
+    title: "Total Predictions",
+    value: "...",
+    icon: Users,
+    description: "Total predictions made by all users",
+  },
+  {
+    title: "Heart Disease Risk",
+    value: "14%",
+    icon: AlertCircle,
+    description: "Average risk across all predictions",
+  },
+  ]);
+
+  useEffect(() => {
+  async function fetchPredictions() {
+    try {
+    const totalPredictions = await getTotalPrediction();
+    if (!totalPredictions.success) {
+      return;
+      // some error occured while loading.
+    }
+
+    setStats((prevStats) => [
+      {
+      ...prevStats[0],
+      value: totalPredictions.totalPredictions || "0",
+      },
+      prevStats[1], // Keep the second stat unchanged
+    ]);
+    } catch (error) {
+    console.error("Error fetching predictions:", error);
+    }
+  }
+
+  fetchPredictions();
+  }, []);
 
 
 
